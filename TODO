@@ -1,15 +1,47 @@
 Need to set up RLES server
-Open up firewalls?
+- Open up firewalls?
+- Set up GitHub SSH key on RLES & connect to repo
 
+
+Set up MySQL locally
+- King User
+- Set up DB tables (write a script to do all this?)
+- Replicate when complete & port over
 Set up MySQL on RLES
-Set up all MySQL tables
+
 
 Figure out how websockets work 
 https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers 
 https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
 
+
+Notes:
+- must use prepared statements
+- must validate & sanitize all data
+- look into logging & security, cross cutting concerns
+
+
 Setup frontend/login page
+- Username & Password
+- Player logs in, redirected to lobby
+- Build Registration
+- session token (Security Tokens Lecture)
+    - if no session token, every other page redirects to login
+- First time to play w DB connection (prep stmts)
+- Setup nice CSS, potential loose style guide for the rest (color palette?)
+- Advanced features: captcha, admin page, pwd reset...
 
 Setup lobby page
+- all players in lobby can see list of other players in lobby
+    - how to track actual presence?
+- all players in lobby can chat with eachother
+    - websockets
+    - 
+- a player can choose a competitor to challenge
+    - button next to each player on list
+- once the competitor accepts, both players are redirected to the game page
+    - some kind of popup message
+    - Notify challenger if that user exits lobby?
 
 Setup game page
+- outline
