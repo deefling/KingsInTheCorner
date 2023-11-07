@@ -1,0 +1,15 @@
+Need to set up RLES server
+Open up firewalls?
+
+Set up MySQL on RLES
+Set up all MySQL tables
+
+Figure out how websockets work 
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers 
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
+
+Setup frontend/login page
+
+Setup lobby page
+
+Setup game page

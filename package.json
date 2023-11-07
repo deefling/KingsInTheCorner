@@ -1,0 +1,15 @@
+{
+  "name": "kingsinthecorner",
+  "version": "1.0.0",
+  "description": "A server allowing users to play Kings in the Corner together",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "M. Shengelia",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
