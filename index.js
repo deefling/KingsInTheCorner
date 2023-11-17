@@ -10,10 +10,16 @@ const pages_dir = process.env.PAGES_DIRECTORY
 
 
 server.get('/login', (req, res) => {
-//   res.send('Hello World!')
   res.sendFile(path.join(pages_dir, '/login.html'));
 
 })
+
+server.get('/lobby', (req, res) => {
+    res.sendFile(path.join(pages_dir, '/lobby.html'));
+  
+  })
+
+
 
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
