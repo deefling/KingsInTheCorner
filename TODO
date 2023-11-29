@@ -4,9 +4,9 @@ Need to set up RLES server
 
 
 Set up MySQL locally
-- King User
 - Set up DB tables (write a script to do all this?)
 - Replicate when complete & port over
+- Try to SQL inject when setting up login
 Set up MySQL on RLES
 
 
