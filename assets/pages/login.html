@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login - Kings In The Corner</title>
+        <!-- CSS -->
+        <script>
+
+        function login(){
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            //check credentials with SQL driver
+            validUser = true
+
+
+            if(validUser){
+                //Construct session token
+            }
+            else {
+                //reload page with alert
+            } 
+
+            //redirect to lobby
+            // window.location.replace("./lobby.html");
+
+        }
+        </script>
+    </head>
+    <body>
+        <h1>Login Page</h1>
+
+        <div>  
+            <!-- formaction - redirect to lobby page if logged in -->
+            <!-- might need to use a JS function & button -->
+            <form id="loginForm" onsubmit="login()">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" value=""><br>
+                
+                <label for="password">Password:</label><br>
+                <input type="text" id="password" name="password" value=""><br>
+                 
+                <!-- forgot password? -->
+                <!-- register -->
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </body>
+</html>
