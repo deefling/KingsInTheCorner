@@ -4,24 +4,37 @@
         <title>Login - Kings In The Corner</title>
         <!-- CSS -->
         <script>
+            
+            require('dotenv').config()
+            const api_path = process.env.API_PATH
 
-        function login(){
-            let username = document.getElementById("username").value;
-            let password = document.getElementById("password").value;
+            // const form = document.querySelector("#loginForm");
+            // form.addEventListener('submit', e => {
+            //     e.preventDefault()
+            //     alert('test')
+            //     login()
+            // } )
 
-            //check credentials with SQL driver
-            validUser = true
+
+            function login(){
+                let username = document.getElementById("username").value;
+                let password = document.getElementById("password").value;
+
+                //check credentials with SQL driver
+                validUser = true
 
 
-            if(validUser){
-                //Construct session token
-            }
-            else {
-                //reload page with alert
-            } 
+                if(validUser){
+                    //Construct session token
+                }
+                else {
+                    //reload page with alert
+                } 
 
-            //redirect to lobby
-            // window.location.replace("./lobby.html");
+                //redirect to lobby
+                // window.location.replace(`${api_path}/lobby`);
+                window.location.replace(`lobby`);
+                return false;
 
         }
         </script>
@@ -32,7 +45,7 @@
         <div>  
             <!-- formaction - redirect to lobby page if logged in -->
             <!-- might need to use a JS function & button -->
-            <form id="loginForm" onsubmit="login()">
+            <form id="loginForm" onsubmit="return login()">
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username" value=""><br>
                 
@@ -41,7 +54,7 @@
                  
                 <!-- forgot password? -->
                 <!-- register -->
-                <input type="submit" value="Submit">
+                <input id="submitbtn" type="submit" value="Submit">
             </form>
         </div>
     </body>
