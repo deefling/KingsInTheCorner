@@ -67,9 +67,10 @@ function addUser(user, pw) {
   });
 }
 
-function checkUser(user, pw){
+async function checkUser(user, pw){
   var valid = false;
   
+  let myPromise = new Promise((myResolve, myReject) => {
   pool.getConnection(function(err, con) {
     if (err) throw err;
 
@@ -78,20 +79,29 @@ function checkUser(user, pw){
     var sql = "SELECT username FROM users WHERE username = ? AND password = ?;"
     
     con.query(sql, [user, password], (err, result) => {
+      con.release();
+
       if (err) throw err;
 
       if(result.length == 0){
         dbLog('Matching user & password not found');
+        myReject();
         return;
       }
 
       dbLog("User password confirmed");
-      valid = true
+      myResolve()
       return
     });
 
-    con.release();
-  });
+  })
+})
+
+await myPromise.then(
+  function(value) {valid = true;},
+  function(error) {}
+);
+
   return valid;
 }
 
