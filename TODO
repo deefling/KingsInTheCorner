@@ -19,11 +19,11 @@ Notes:
 - must use prepared statements
 - must validate & sanitize all data
 - look into logging & security, cross cutting concerns
+- build in more error catching/safety
 
 
 Setup frontend/login page
 - Username & Password
-- Player logs in, redirected to lobby
 - Build Registration
 - session token (Security Tokens Lecture)
     - if no session token, every other page redirects to login

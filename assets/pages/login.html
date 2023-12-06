@@ -3,38 +3,52 @@
     <head>
         <title>Login - Kings In The Corner</title>
         <!-- CSS -->
-        <script>
-            
+        <script>    
             require('dotenv').config()
             const api_path = process.env.API_PATH
 
-            // const form = document.querySelector("#loginForm");
-            // form.addEventListener('submit', e => {
-            //     e.preventDefault()
-            //     alert('test')
-            //     login()
-            // } )
+            async function login(){
+                let user = document.getElementById("username").value;
+                let pw = document.getElementById("password").value;
 
 
-            function login(){
-                let username = document.getElementById("username").value;
-                let password = document.getElementById("password").value;
+                const userData = {username: user, password: pw}
 
-                //check credentials with SQL driver
-                validUser = true
+                var validUser = false
+
+                await fetch("http://localhost:3000/checkPassword", {
+                    method: "POST", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                    }
+                )
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    validUser = data.validUser
+                    return;
+                })
+                .catch(function (err) {
+                    console.log("Unable to fetch -", err);
+                    return;
+                });
 
 
                 if(validUser){
                     //Construct session token
+                    window.location.replace(`lobby`);
+                    return false;
                 }
                 else {
                     //reload page with alert
+                    alert('INVALID')
                 } 
-
-                //redirect to lobby
-                // window.location.replace(`${api_path}/lobby`);
-                window.location.replace(`lobby`);
-                return false;
+                
 
         }
         </script>
