@@ -42,7 +42,7 @@ function recreateDB(){
       
     //CREATE TABLE FOR USERS
     //TODO add session token & login time?
-    var sql = 'CREATE TABLE users (userID int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
+    var sql = 'CREATE TABLE users (userID CHAR(36) NOT NULL PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -52,7 +52,7 @@ function recreateDB(){
     });
 
     //CREATE TABLE FOR LOBBY
-    sql = "CREATE TABLE lobby (userID int, FOREIGN KEY (userID) REFERENCES USERS(userID))"
+    sql = "CREATE TABLE lobby (userID CHAR, FOREIGN KEY (userID) REFERENCES USERS(userID))"
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -94,7 +94,8 @@ function addUser(user, pw) {
 
     const password = sha256(pw)
     
-    var sql = "INSERT INTO users (username, password) VALUES (?,?)";
+
+    var sql = "INSERT INTO users (userID, username, password) VALUES (UUID(), ?,?)";
         con.query(sql, [user, password], (err, result) => {
           if (err) throw err;
           dbLog("Record inserted!");
@@ -106,8 +107,9 @@ function addUser(user, pw) {
 
 
 
-async function checkUser(user, pw){
+async function checkPassword(user, pw){
   var valid = false;
+  var id = -1;
   
   let myPromise = new Promise((myResolve, myReject) => {
   pool.getConnection(function(err, con) {
@@ -115,7 +117,7 @@ async function checkUser(user, pw){
 
     const password = sha256(pw)
   
-    var sql = "SELECT username FROM users WHERE username = ? AND password = ?;"
+    var sql = "SELECT userID FROM users WHERE username = ? AND password = ?;"
     
     con.query(sql, [user, password], (err, result) => {
       con.release();
@@ -129,7 +131,7 @@ async function checkUser(user, pw){
       }
 
       dbLog("User password confirmed");
-      myResolve()
+      myResolve(result[0].userID)
       return
     });
 
@@ -137,11 +139,11 @@ async function checkUser(user, pw){
 })
 
 await myPromise.then(
-  function(value) {valid = true;},
+  function(value) {id = value},
   function(error) {}
 );
 
-  return valid;
+  return id;
 }
 
 function setToken(userID, token){
@@ -153,7 +155,7 @@ function getToken(userID){
 }
 
 function joinLobby(token){
-
+  
 }
 
 function leaveLobby (token){
@@ -168,4 +170,4 @@ function dbLog(msg){
 
 
 
-module.exports = { checkUser, dbLog, checkDB, recreateDB}
+module.exports = { checkPassword, dbLog, checkDB, recreateDB}

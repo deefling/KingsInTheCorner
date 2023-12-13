@@ -1,5 +1,5 @@
 const sql = require('./mySQLDriver.js');
 
 
-recreateDB();
-setTimeout(()=>checkDB(), 5000)
+sql.recreateDB();
+setTimeout(()=>sql.checkDB(), 5000)

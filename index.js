@@ -28,20 +28,29 @@ server.get('/login', (req, res) => {
   res.sendFile(path.join(pages_dir, '/login.html'));
 })
 
-server.post('/checkPassword', (req, res) => {
+server.post('/checkPassword', async (req, res) => {
     //get checkuser to return an ID
-    const valid = sql.checkUser(req.body.username, req.body.password)
-    apiLog(valid)
-    if(valid){
+    const id = await sql.checkPassword(req.body.username, req.body.password)
+    apiLog(id)
+    if(true){
       //generate token here?
       apiLog(req.socket.remoteAddress)
+
+      //data points
+      //IP
+      //Timestamp
+
+      //convert to different bases
+      //normalize w/ zeros?
+      //interleave plus rand char?
+      //add checksum
 
 
       //put token in db by passing id
     }
 
 
-    res.json({validUser: valid});
+    res.json({validUser: true});
   });
 
 server.get('/lobby', (req, res) => {
@@ -66,4 +75,8 @@ server.listen(port, () => {
 
 function apiLog(msg){
   console.log('\x1b[95m[Server]:\x1b[0m', msg)
+}
+
+function generateToken(ip, id){
+
 }
