@@ -28,6 +28,12 @@ function recreateDB(){
         dbLog("Database accessed");
     });
 
+    //DROP LOBBY TABLE
+    con.query("DROP TABLE IF EXISTS lobby", function (err, result) {
+      if (err) throw err;
+      dbLog("Table dropped");
+  });
+    
     //DROP USER TABLE
     con.query("DROP TABLE IF EXISTS users", function (err, result) {
         if (err) throw err;
@@ -36,7 +42,7 @@ function recreateDB(){
       
     //CREATE TABLE FOR USERS
     //TODO add session token & login time?
-    var sql = "CREATE TABLE users (username VARCHAR(255), password VARCHAR(255))";
+    var sql = 'CREATE TABLE users (userID int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -45,10 +51,41 @@ function recreateDB(){
       addUser('deefling', 'password')
     });
 
-    con.release()
+    //CREATE TABLE FOR LOBBY
+    sql = "CREATE TABLE lobby (userID int, FOREIGN KEY (userID) REFERENCES USERS(userID))"
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      dbLog("Table created");
+    });
+
+    setTimeout(()=>con.release(), 5000)
+
+
+
   });
-  
 }
+
+function checkDB(){
+  pool.getConnection(function(err, con) {
+    if (err) throw err;
+
+    var sql = 'SELECT * FROM users';
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      dbLog(result);
+    });
+
+    var sql = 'SELECT * FROM lobby';
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      dbLog(result);
+    });
+
+  con.release()
+});
+}
+
+
 
 function addUser(user, pw) {
   pool.getConnection(function(err, con) {
@@ -66,6 +103,8 @@ function addUser(user, pw) {
     con.release()
   });
 }
+
+
 
 async function checkUser(user, pw){
   var valid = false;
@@ -109,13 +148,22 @@ function checkToken(user, token){
 
 }
 
+function joinLobby(token){
+
+}
+
+function leaveLobby (token){
+  
+}
+
 function dbLog(msg){
   console.log('\x1b[34m[MySQL]:\x1b[0m', msg)
 }
 
 
 
+recreateDB();
+setTimeout(()=>checkDB(), 5000)
 
-// recreateDB();
 
-module.exports = { checkUser, dbLog}
+module.exports = { checkUser, dbLog, checkDB}
