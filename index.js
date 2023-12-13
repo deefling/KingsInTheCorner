@@ -29,10 +29,19 @@ server.get('/login', (req, res) => {
 })
 
 server.post('/checkPassword', (req, res) => {
+    //get checkuser to return an ID
     const valid = sql.checkUser(req.body.username, req.body.password)
     apiLog(valid)
+    if(valid){
+      //generate token here?
+      apiLog(req.socket.remoteAddress)
+
+
+      //put token in db by passing id
+    }
+
+
     res.json({validUser: valid});
-    // res.send(valid)
   });
 
 server.get('/lobby', (req, res) => {

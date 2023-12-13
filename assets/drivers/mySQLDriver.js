@@ -144,7 +144,11 @@ await myPromise.then(
   return valid;
 }
 
-function checkToken(user, token){
+function setToken(userID, token){
+
+}
+
+function getToken(userID){
 
 }
 
@@ -162,8 +166,6 @@ function dbLog(msg){
 
 
 
-recreateDB();
-setTimeout(()=>checkDB(), 5000)
 
 
-module.exports = { checkUser, dbLog, checkDB}
+module.exports = { checkUser, dbLog, checkDB, recreateDB}

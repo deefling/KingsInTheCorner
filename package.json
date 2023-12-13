@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "db": "node ./assets/drivers/mySQLDriver.js"
+    "db": "node ./assets/drivers/checkDB.js",
+    "resetdb": "node ./assets/drivers/resetDB.js"
   },
   "author": "M. Shengelia",
   "license": "ISC",
