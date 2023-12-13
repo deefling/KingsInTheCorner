@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kings In The Corner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            *{
+                margin:0;
+                padding: 0;
+            }
+            
+            #game_window{
+                width: 100vw;
+                height: 100vh;
+                background: lightgreen;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #enemy_hand{
+                width: 100vw;
+                height: 10vh;
+                background-color: palevioletred;
+
+            }
+
+            #player_hand{
+                width: 100vw;
+                height: 10vh;
+                background-color: palevioletred;
+            }
+
+            #board{
+                width: 100vw;
+                height: 80vh
+            }
+
+        </style>
+
+
+        <script defer>
+
+                
+            const gameWindow = document.querySelector('#game_window');
+            var deck = []
+            var hand = []
+
+
+            function startGame(){
+
+                fetch('http://localhost:3000/cards')
+                .then((response) => response.json())
+                .then((json) => {
+                 
+                    deck = json.cards
+
+
+                    
+                    
+                });
+            }
+            
+            startGame()
+            
+            
+
+        </script>
+    </head>
+    <body>
+
+        <div id="game_window">  
+            <div id="enemy_hand"></div>
+            <div id="board">
+                <div id="deck"></div>
+                <div id="north_pile"></div>
+                <div id="east_pile"></div>
+                <div id="south_pile"></div>
+                <div id="west_pile"></div>
+            </div>
+            <div id="player_hand"></div>
+
+        </div>
+    </body>
+</html>

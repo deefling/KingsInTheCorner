@@ -5,11 +5,8 @@ const port = 3000
 const path = require('path');
 const dotenv = require('dotenv').config()
 const pages_dir = process.env.PAGES_DIRECTORY
+const cards_dir = process.env.CARDS_DIRECTORY
 const sql = require('./assets/drivers/mySQLDriver')
-
-// server.use(cors({origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'null', '*']}))
-
-
 
 server.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -41,6 +38,15 @@ server.post('/checkPassword', (req, res) => {
 server.get('/lobby', (req, res) => {
     res.sendFile(path.join(pages_dir, '/lobby.html'));
   
+  })
+
+  server.get('/game', (req, res) => {
+    res.sendFile(path.join(pages_dir, '/game.html'));
+  
+  })
+
+  server.get('/cards', (req, res) => {
+    res.sendFile(path.join(cards_dir, '/cards.json'));
   })
 
 

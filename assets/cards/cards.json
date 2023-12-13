@@ -1,0 +1,265 @@
+{
+    "cards": [
+        {
+            "id": "1",
+            "name": "Ace of Spades",
+            "filename": "spades_ace.svg"
+        },
+        {
+            "id": "2",
+            "name": "Two of Spades",
+            "filename": "spades_2.svg"
+        },
+        {
+            "id": "3",
+            "name": "Three of Spades",
+            "filename": "spades_3.svg"
+        },
+        {
+            "id": "4",
+            "name": "Four of Spades",
+            "filename": "spades_4.svg"
+        },
+        {
+            "id": "5",
+            "name": "Five of Spades",
+            "filename": "spades_5.svg"
+        },
+        {
+            "id": "6",
+            "name": "Six of Spades",
+            "filename": "spades_6.svg"
+        },
+        {
+            "id": "7",
+            "name": "Seven of Spades",
+            "filename": "spades_7.svg"
+        },
+        {
+            "id": "8",
+            "name": "Eight of Spades",
+            "filename": "spades_8.svg"
+        },
+        {
+            "id": "9",
+            "name": "Nine of Spades",
+            "filename": "spades_9.svg"
+        },
+        {
+            "id": "10",
+            "name": "Ten of Spades",
+            "filename": "spades_10.svg"
+        },
+        {
+            "id": "11",
+            "name": "Jack of Spades",
+            "filename": "spades_jack.svg"
+        },
+        {
+            "id": "12",
+            "name": "Queen of Spades",
+            "filename": "spades_queen.svg"
+        },
+        {
+            "id": "13",
+            "name": "King of Spades",
+            "filename": "spades_king.svg"
+        },
+        {
+            "id": "14",
+            "name": "Ace of Hearts",
+            "filename": "hearts_ace.svg"
+        },
+        {
+            "id": "15",
+            "name": "Two of Hearts",
+            "filename": "hearts_2.svg"
+        },
+        {
+            "id": "16",
+            "name": "Three of Hearts",
+            "filename": "hearts_3.svg"
+        },
+        {
+            "id": "17",
+            "name": "Four of Hearts",
+            "filename": "hearts_4.svg"
+        },
+        {
+            "id": "18",
+            "name": "Five of Hearts",
+            "filename": "hearts_5.svg"
+        },
+        {
+            "id": "19",
+            "name": "Six of Hearts",
+            "filename": "hearts_6.svg"
+        },
+        {
+            "id": "20",
+            "name": "Seven of Hearts",
+            "filename": "hearts_7.svg"
+        },
+        {
+            "id": "21",
+            "name": "Eight of Hearts",
+            "filename": "hearts_8.svg"
+        },
+        {
+            "id": "22",
+            "name": "Nine of Hearts",
+            "filename": "hearts_9.svg"
+        },
+        {
+            "id": "23",
+            "name": "Ten of Hearts",
+            "filename": "hearts_10.svg"
+        },
+        {
+            "id": "24",
+            "name": "Jack of Hearts",
+            "filename": "hearts_jack.svg"
+        },
+        {
+            "id": "25",
+            "name": "Queen of Hearts",
+            "filename": "hearts_queen.svg"
+        },
+        {
+            "id": "26",
+            "name": "King of Hearts",
+            "filename": "hearts_king.svg"
+        },
+        {
+            "id": "27",
+            "name": "Ace of Diamonds",
+            "filename": "diamonds_ace.svg"
+        },
+        {
+            "id": "28",
+            "name": "Two of Diamonds",
+            "filename": "diamonds_2.svg"
+        },
+        {
+            "id": "29",
+            "name": "Three of Diamonds",
+            "filename": "diamonds_3.svg"
+        },
+        {
+            "id": "30",
+            "name": "Four of Diamonds",
+            "filename": "diamonds_4.svg"
+        },
+        {
+            "id": "31",
+            "name": "Five of Diamonds",
+            "filename": "diamonds_5.svg"
+        },
+        {
+            "id": "32",
+            "name": "Six of Diamonds",
+            "filename": "diamonds_6.svg"
+        },
+        {
+            "id": "33",
+            "name": "Seven of Diamonds",
+            "filename": "diamonds_7.svg"
+        },
+        {
+            "id": "34",
+            "name": "Eight of Diamonds",
+            "filename": "diamonds_8.svg"
+        },
+        {
+            "id": "35",
+            "name": "Nine of Diamonds",
+            "filename": "diamonds_9.svg"
+        },
+        {
+            "id": "36",
+            "name": "Ten of Diamonds",
+            "filename": "diamonds_10.svg"
+        },
+        {
+            "id": "37",
+            "name": "Jack of Diamonds",
+            "filename": "diamonds_jack.svg"
+        },
+        {
+            "id": "38",
+            "name": "Queen of Diamonds",
+            "filename": "diamonds_queen.svg"
+        },
+        {
+            "id": "39",
+            "name": "King of Diamonds",
+            "filename": "diamonds_king.svg"
+        },
+        {
+            "id": "40",
+            "name": "Ace of Clubs",
+            "filename": "clubs_ace.svg"
+        },
+        {
+            "id": "41",
+            "name": "Two of Clubs",
+            "filename": "clubs_2.svg"
+        },
+        {
+            "id": "42",
+            "name": "Three of Clubs",
+            "filename": "clubs_3.svg"
+        },
+        {
+            "id": "43",
+            "name": "Four of Clubs",
+            "filename": "clubs_4.svg"
+        },
+        {
+            "id": "44",
+            "name": "Five of Clubs",
+            "filename": "clubs_5.svg"
+        },
+        {
+            "id": "45",
+            "name": "Six of Clubs",
+            "filename": "clubs_6.svg"
+        },
+        {
+            "id": "46",
+            "name": "Seven of Clubs",
+            "filename": "clubs_7.svg"
+        },
+        {
+            "id": "47",
+            "name": "Eight of Clubs",
+            "filename": "clubs_8.svg"
+        },
+        {
+            "id": "48",
+            "name": "Nine of Clubs",
+            "filename": "clubs_9.svg"
+        },
+        {
+            "id": "49",
+            "name": "Ten of Clubs",
+            "filename": "clubs_10.svg"
+        },
+        {
+            "id": "50",
+            "name": "Jack of Clubs",
+            "filename": "clubs_jack.svg"
+        },
+        {
+            "id": "51",
+            "name": "Queen of Clubs",
+            "filename": "clubs_queen.svg"
+        },
+        {
+            "id": "52",
+            "name": "King of Clubs",
+            "filename": "clubs_king.svg"
+        }
+    ]
+}
+
