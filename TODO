@@ -4,9 +4,8 @@ Need to set up RLES server
 
 
 Set up MySQL locally
-- King User
-- Set up DB tables (write a script to do all this?)
-- Replicate when complete & port over
+- Replicate db when complete & port over
+- Try to SQL inject when setting up login
 Set up MySQL on RLES
 
 
@@ -16,18 +15,16 @@ https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocke
 
 
 Notes:
-- must use prepared statements
 - must validate & sanitize all data
 - look into logging & security, cross cutting concerns
+- build in more error catching/safety
 
 
 Setup frontend/login page
 - Username & Password
-- Player logs in, redirected to lobby
 - Build Registration
 - session token (Security Tokens Lecture)
     - if no session token, every other page redirects to login
-- First time to play w DB connection (prep stmts)
 - Setup nice CSS, potential loose style guide for the rest (color palette?)
 - Advanced features: captcha, admin page, pwd reset...
 

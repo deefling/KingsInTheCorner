@@ -3,25 +3,52 @@
     <head>
         <title>Login - Kings In The Corner</title>
         <!-- CSS -->
-        <script>
+        <script>    
+            require('dotenv').config()
+            const api_path = process.env.API_PATH
 
-        function login(){
-            let username = document.getElementById("username").value;
-            let password = document.getElementById("password").value;
+            async function login(){
+                let user = document.getElementById("username").value;
+                let pw = document.getElementById("password").value;
 
-            //check credentials with SQL driver
-            validUser = true
- 
 
-            if(validUser){
-                //Construct session token
-            }
-            else {
-                //reload page with alert
-            } 
+                const userData = {username: user, password: pw}
 
-            //redirect to lobby
-            // window.location.replace("./lobby.html");
+                var validUser = false
+
+                await fetch("http://localhost:3000/checkPassword", {
+                    method: "POST", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                    }
+                )
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    validUser = data.validUser
+                    return;
+                })
+                .catch(function (err) {
+                    console.log("Unable to fetch -", err);
+                    return;
+                });
+
+
+                if(validUser){
+                    //Construct session token
+                    window.location.replace(`lobby`);
+                    return false;
+                }
+                else {
+                    //reload page with alert
+                    alert('INVALID')
+                } 
+                
 
         }
         </script>
@@ -32,7 +59,7 @@
         <div>  
             <!-- formaction - redirect to lobby page if logged in -->
             <!-- might need to use a JS function & button -->
-            <form id="loginForm" onsubmit="login()">
+            <form id="loginForm" onsubmit="return login()">
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username" value=""><br>
                 
@@ -41,7 +68,7 @@
                  
                 <!-- forgot password? -->
                 <!-- register -->
-                <input type="submit" value="Submit">
+                <input id="submitbtn" type="submit" value="Submit">
             </form>
         </div>
     </body>
