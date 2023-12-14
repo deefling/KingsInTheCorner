@@ -42,7 +42,7 @@ function recreateDB(){
       
     //CREATE TABLE FOR USERS
     //TODO add session token & login time?
-    var sql = 'CREATE TABLE users (userID CHAR(36) NOT NULL PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
+    var sql = 'CREATE TABLE users (userID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -52,7 +52,7 @@ function recreateDB(){
     });
 
     //CREATE TABLE FOR LOBBY
-    sql = "CREATE TABLE lobby (userID CHAR, FOREIGN KEY (userID) REFERENCES USERS(userID))"
+    sql = "CREATE TABLE lobby (userID INT, FOREIGN KEY (userID) REFERENCES USERS(userID))"
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -95,7 +95,7 @@ function addUser(user, pw) {
     const password = sha256(pw)
     
 
-    var sql = "INSERT INTO users (userID, username, password) VALUES (UUID(), ?,?)";
+    var sql = "INSERT INTO users (username, password) VALUES (?,?)";
         con.query(sql, [user, password], (err, result) => {
           if (err) throw err;
           dbLog("Record inserted!");

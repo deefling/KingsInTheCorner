@@ -15,6 +15,7 @@
                 const userData = {username: user, password: pw}
 
                 var validUser = false
+                var token = ""
 
                 await fetch("http://localhost:3000/checkPassword", {
                     method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -31,6 +32,9 @@
                 })
                 .then((data) => {
                     validUser = data.validUser
+
+                    if(validUser)
+                    token = data.token
                     return;
                 })
                 .catch(function (err) {
