@@ -92,25 +92,25 @@
                 .then((data) => {
                     validUser = data.validUser
 
-                    if(validUser)
-                    token = data.token
+                    if(validUser){
+                        token = data.token
+                        //add session token to local data
+                        window.location.replace(`lobby`);
+                    }else {
+                    //reload page with alert 
+                    alert('Invalid')
+                    } 
+                    
                     return;
                 })
                 .catch(function (err) {
-                    console.log("Unable to fetch -", err);
+                    alert("Unable to fetch -" + err);
                     return;
                 });
+                return false;
 
 
-                if(validUser){
-                    //add session token to local data
-                    window.location.replace(`lobby`);
-                    return false;
-                }
-                else {
-                    //reload page with alert 
-                    alert('INVALID')
-                } 
+                
                 
 
         }
