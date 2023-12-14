@@ -23,12 +23,10 @@ Notes:
 
 Setup frontend/login page
 - Build Registration
-- session token (Security Tokens Lecture)
-    - if no session token, every other page redirects to login
-- Setup nice CSS, potential loose style guide for the rest (color palette?)
 - Advanced features: captcha, admin page, pwd reset...
 
 Setup lobby page
+- if no session token, redirect
 - all players in lobby can see list of other players in lobby
     - how to track actual presence?
     - tokens
@@ -42,5 +40,6 @@ Setup lobby page
     - Notify challenger if that user exits lobby?
 
 Setup game page
+- if no session token, redirect
 - outline
-- need to think about how i am storing all states
+- need to think about how i am storing all game states

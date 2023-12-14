@@ -48,10 +48,25 @@ server.post('/checkPassword', async (req, res) => {
 
   });
 
+
+
 server.get('/lobby', (req, res) => {
     res.sendFile(path.join(pages_dir, '/lobby.html'));
-  
   })
+
+server.get('/playerList', (req, res) => {
+    var data = [
+      {username: 'player1'},
+      {username: 'player2'},
+      {username: 'player3'},
+      {username: 'player4'},
+      {username: 'player5'},
+    ]
+    res.sendFile(path.join(pages_dir, '/lobby.html'));
+  })
+
+
+
 
   server.get('/game', (req, res) => {
     res.sendFile(path.join(pages_dir, '/game.html'));

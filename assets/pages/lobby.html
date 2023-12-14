@@ -2,11 +2,94 @@
 <html>
     <head>
         <title>Lobby - Kings In The Corner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+
+            *{
+                margin: 0;
+                padding: 0;
+            }
+
+            body{
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                background-color: #34344A;
+            }
+
+            #player_list{
+                width: 20vw;
+                height: 95vh;
+                background-color: #B9566D;
+                border-radius: 5px;
+            }
+
+            h1{
+                margin: 0.5em;
+            }
+
+            #lobby_chat{
+                width: 75vw;
+                height: 95vh;
+                background-color: #F1EDEE;
+                border-radius: 5px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #chat_log{
+                width: 100%;
+                height: 85vh;
+            }
+            
+            #chat_box{
+                width: 100%;
+                height: 10vh;
+                background-color: #F1EDEE;
+            }
+
+        </style>
+
+        <script defer>
+
+
+            window.onload = () => {
+                // setInterval(updatePlayerList, 3000);
+            }
+
+
+            
+            function updatePlayerList(){
+                console.log('update')
+
+
+                fetch("http://localhost:3000/checkPassword", {
+                    method: "POST", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                    }
+                )
+            }
+
+
         </script>
+
     </head>
     <body>
-        <h1>Lobby Page</h1>
-        <!-- player list -->
-        <!-- lobby chat -->
+        <div id="player_list">
+            <h1>Player List</h1>
+        </div>
+        <div id="lobby_chat">
+            <div id="chat_log"></div>
+            <input id="chat_box" type="text">
+        </div>
     </body>
 </html>
