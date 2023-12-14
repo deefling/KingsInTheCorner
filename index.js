@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config()
 const pages_dir = process.env.PAGES_DIRECTORY
 const cards_dir = process.env.CARDS_DIRECTORY
 const sql = require('./assets/drivers/mySQLDriver');
-const { time } = require('console');
+const bcrypt = require('bcrypt');
 const activeTokens = [];
 
 server.use(function(req, res, next) {
@@ -69,7 +69,7 @@ function apiLog(msg){
   console.log('\x1b[95m[Server]:\x1b[0m', msg)
 }
 
-function generateToken(ip = "127.0.0.1", id){
+async function generateToken(ip = "127.0.0.1", id){
 
   var tokenstr = ""
 
@@ -112,24 +112,35 @@ function generateToken(ip = "127.0.0.1", id){
   }
 
   //create simple checksum
-  let checksum = 0;
-  for (let i = 0; i < tokenstr.length; i++) {
-    // Add the ASCII value to checksum
-    checksum += tokenstr.charCodeAt(i);
-  }
+  // let checksum = 0;
+  // for (let i = 0; i < tokenstr.length; i++) {
+  //   // Add the ASCII value to checksum
+  //   checksum += tokenstr.charCodeAt(i);
+  // }
  
   // Ensure the checksum is within the range of 0-255 with leading zeros
-  checksum = (checksum % 256).toString().padStart(3, "0");
+  // checksum = (checksum % 256).toString().padStart(3, "0");
 
-  tokenstr += checksum
+ //generate 60-char checksum using bcrypt + add to token
+  
+ let myPromise = new Promise((myResolve, myReject) => {
+    bcrypt.genSalt(1,  function(err, salt) {
+      if(err){myReject()}
+      bcrypt.hash(tokenstr, salt, function(err, hash) {
+        if(err){myReject()}
+        var checksumtoken = hash + tokenstr
+        myResolve(checksumtoken)
+      });
+    });
+  });
 
-  apiLog(randChars)
-  apiLog(cryptID)
-  apiLog(cryptIP)
-  apiLog(cryptTime)
+
+  await myPromise.then(
+    function(value) {tokenstr = value},
+    function(error) {}
+  );
+  
   apiLog(tokenstr)
-
-
   activeTokens.push(tokenstr)
   return tokenstr
 
