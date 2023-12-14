@@ -22,7 +22,6 @@ Notes:
 
 
 Setup frontend/login page
-- Username & Password
 - Build Registration
 - session token (Security Tokens Lecture)
     - if no session token, every other page redirects to login
@@ -32,9 +31,10 @@ Setup frontend/login page
 Setup lobby page
 - all players in lobby can see list of other players in lobby
     - how to track actual presence?
+    - tokens
+    - logout button
 - all players in lobby can chat with eachother
     - websockets
-    - 
 - a player can choose a competitor to challenge
     - button next to each player on list
 - once the competitor accepts, both players are redirected to the game page

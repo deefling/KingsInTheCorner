@@ -2,7 +2,61 @@
 <html>
     <head>
         <title>Login - Kings In The Corner</title>
-        <!-- CSS -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+
+            *{
+                margin: 0;
+                padding: 0;
+            }
+
+            body{
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: #34344A;
+                /* use metaballs? */
+            }
+
+            #loginTile{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: #B9566D;
+                color: #F1EDEE;
+                height: 45vh;
+                width: 25vw;
+                border-radius: 5px;
+            }
+
+            h1{
+                font-size: 2em;
+                margin-bottom: 0.5em;
+            }
+
+            input{
+                font-size: 1.3em;
+                margin-bottom: 0.5em;
+
+            }
+
+            .btn{
+                border: none;
+                background-color: #34344A;
+                color: #F1EDEE;
+                text-decoration: none;
+                text-align: center;
+                padding: 0.5em;
+            }
+
+
+
+        </style>
         <script>    
             require('dotenv').config()
             const api_path = process.env.API_PATH
@@ -44,12 +98,12 @@
 
 
                 if(validUser){
-                    //Construct session token
+                    //add session token to local data
                     window.location.replace(`lobby`);
                     return false;
                 }
                 else {
-                    //reload page with alert
+                    //reload page with alert 
                     alert('INVALID')
                 } 
                 
@@ -58,11 +112,10 @@
         </script>
     </head>
     <body>
-        <h1>Login Page</h1>
 
-        <div>  
-            <!-- formaction - redirect to lobby page if logged in -->
-            <!-- might need to use a JS function & button -->
+        <div id = 'loginTile'>  
+            <h1>Log In</h1>
+
             <form id="loginForm" onsubmit="return login()">
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username" value=""><br>
@@ -71,8 +124,12 @@
                 <input type="text" id="password" name="password" value=""><br>
                  
                 <!-- forgot password? -->
-                <!-- register -->
-                <input id="submitbtn" type="submit" value="Submit">
+                <span>
+                    <input class="btn" id="submitbtn" type="submit" value="Log In">
+                    <input class="btn" id="registerbtn" type="button" value="Sign Up">
+    
+                </span>
+
             </form>
         </div>
     </body>
