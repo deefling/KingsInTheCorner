@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-        
+
         <style>
 
             *{
@@ -70,13 +70,12 @@
                 let user = document.getElementById("username").value;
                 let pw = document.getElementById("password").value;
 
-
                 const userData = {username: user, password: pw}
 
-                var validUser = false
+                var validUser = false;
                 var token = ""
 
-                await fetch("http://localhost:3000/checkPassword", {
+                fetch("http://localhost:3000/checkPassword", {
                     method: "POST", // *GET, POST, PUT, DELETE, etc.
                     mode: "cors", // no-cors, *cors, same-origin
                     headers: {
@@ -89,30 +88,25 @@
                 .then((response) => {
                     return response.json();
                 })
-                .then((data) => {
+                .then((data) => { //after getting server response
+                    
                     validUser = data.validUser
-
-                    if(validUser)
-                    token = data.token
-                    return;
+                    if(validUser){
+                        alert('Valid User')
+                        token = data.token
+                        // document.cookie = `token=${token}`
+                        window.location.replace(`lobby`);
+                    }
+                    else {
+                        alert('Invalid User')
+                    }
                 })
                 .catch(function (err) {
-                    console.log("Unable to fetch -", err);
+                    alert("Unable to fetch -" + err);
                     return;
                 });
 
-
-                if(validUser){
-                    //add session token to local data
-                    window.location.replace(`lobby`);
-                    return false;
-                }
-                else {
-                    //reload page with alert 
-                    alert('INVALID')
-                } 
-                
-
+                return false;
         }
         </script>
     </head>

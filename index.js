@@ -10,14 +10,18 @@ const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
 const activeTokens = [];
 
-server.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', ['origin', 'Content-Type', 'x-api-key', 'Accept']);
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    apiLog(req.url)
-    next();
-});
+// server.use(function(req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', ['origin', 'Content-Type', 'x-api-key', 'Accept']);
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     apiLog(req.url)
+//     next();
+// });
+
+server.use(cors())
+
+
 
 server.use(express.json());
 
@@ -31,13 +35,12 @@ server.get('/login', (req, res) => {
 })
 
 server.post('/checkPassword', async (req, res) => {
-    //get checkuser to return an ID
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){
-      var token = generateToken(req.ip, id);      
+      // var token = await generateToken(req.ip, id);      
 
       //put token in db by passing id
-      res.json({validUser: true, token: token});
+      res.json({validUser: true, token: "token"});
 
     } else {
       res.json({validUser: false});
@@ -111,18 +114,8 @@ async function generateToken(ip = "127.0.0.1", id){
     tokenstr += cryptIP[i]
   }
 
-  //create simple checksum
-  // let checksum = 0;
-  // for (let i = 0; i < tokenstr.length; i++) {
-  //   // Add the ASCII value to checksum
-  //   checksum += tokenstr.charCodeAt(i);
-  // }
- 
-  // Ensure the checksum is within the range of 0-255 with leading zeros
-  // checksum = (checksum % 256).toString().padStart(3, "0");
 
  //generate 60-char checksum using bcrypt + add to token
-  
  let myPromise = new Promise((myResolve, myReject) => {
     bcrypt.genSalt(1,  function(err, salt) {
       if(err){myReject()}
