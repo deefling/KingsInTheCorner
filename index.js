@@ -8,25 +8,13 @@ const pages_dir = process.env.PAGES_DIRECTORY
 const cards_dir = process.env.CARDS_DIRECTORY
 const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
 const activeTokens = [];
 
-// server.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', ['origin', 'Content-Type', 'x-api-key', 'Accept']);
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//     apiLog(req.url)
-//     next();
-// });
 
 server.use(cors())
-
-
-
+server.use(cookieParser());
 server.use(express.json());
-
-
-
 
 
 
@@ -37,10 +25,11 @@ server.get('/login', (req, res) => {
 server.post('/checkPassword', async (req, res) => {
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){
-      // var token = await generateToken(req.ip, id);      
-
-      //put token in db by passing id
-      res.json({validUser: true, token: "token"});
+      var token = await generateToken(req.ip, id);
+      
+      res.cookie('token', token);      
+      //put token in db by passing id?
+      res.json({validUser: true});
 
     } else {
       res.json({validUser: false});
@@ -55,14 +44,18 @@ server.get('/lobby', (req, res) => {
   })
 
 server.get('/playerList', (req, res) => {
+  const {token} = req.cookies
+  apiLog(token);
+
     var data = [
       {username: 'player1'},
       {username: 'player2'},
       {username: 'player3'},
       {username: 'player4'},
       {username: 'player5'},
-    ]
-    res.sendFile(path.join(pages_dir, '/lobby.html'));
+    ];
+
+    res.json(data);
   })
 
 
@@ -148,7 +141,7 @@ async function generateToken(ip = "127.0.0.1", id){
     function(error) {}
   );
   
-  apiLog(tokenstr)
+  apiLog("Generated token:" + tokenstr)
   activeTokens.push(tokenstr)
   return tokenstr
 

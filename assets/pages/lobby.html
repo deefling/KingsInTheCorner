@@ -59,24 +59,29 @@
 
             window.onload = () => {
                 // setInterval(updatePlayerList, 3000);
+                updatePlayerList()
             }
 
 
             
             function updatePlayerList(){
-                console.log('update')
+                console.log('update player list')
 
 
-                fetch("http://localhost:3000/checkPassword", {
-                    method: "POST", // *GET, POST, PUT, DELETE, etc.
+                fetch("/playerList", {
+                    method: "GET", // *GET, POST, PUT, DELETE, etc.
                     mode: "cors", // no-cors, *cors, same-origin
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(userData)
                     }
-                )
+                ).then((response) => {
+                    return response.json();
+                })
+                .then((data) => { //after getting server response
+                    console.log(data)
+                });
             }
 
 

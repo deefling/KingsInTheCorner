@@ -63,9 +63,6 @@
 
 
         <script>    
-            require('dotenv').config()
-            const api_path = process.env.API_PATH
-
             async function login(){
                 let user = document.getElementById("username").value;
                 let pw = document.getElementById("password").value;
@@ -75,30 +72,28 @@
                 var validUser = false;
                 var token = ""
 
-                fetch("http://localhost:3000/checkPassword", {
+                await fetch("/checkPassword", {
                     method: "POST", // *GET, POST, PUT, DELETE, etc.
                     mode: "cors", // no-cors, *cors, same-origin
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(userData)
+                        body: JSON.stringify(userData)
                     }
                 )
                 .then((response) => {
                     return response.json();
                 })
-                .then((data) => { //after getting server response
+                .then(async (data) => { //after getting server response
                     
                     validUser = data.validUser
 
                     if(validUser){
-                        token = data.token
-                        //add session token to local data
                         window.location.replace(`lobby`);
                     }else {
                     //reload page with alert 
-                    alert('Invalid')
+                        alert('Invalid')
                     } 
                     
                     return;
@@ -107,6 +102,7 @@
                     alert("Unable to fetch -" + err);
                     return;
                 });
+
                 return false;
 
         }
@@ -126,7 +122,7 @@
                  
                 <!-- forgot password? -->
                 <span>
-                    <input class="btn" id="submitbtn" type="submit" value="Log In">
+                    <input class="btn" id="submitbtn" type="button" onclick="login()" value="Log In">
                     <input class="btn" id="registerbtn" type="button" value="Sign Up">
     
                 </span>

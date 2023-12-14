@@ -42,7 +42,7 @@ function recreateDB(){
       
     //CREATE TABLE FOR USERS
     //TODO add session token & login time?
-    var sql = 'CREATE TABLE users (userID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255) NOT NULL, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
+    var sql = 'CREATE TABLE users (userID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, sessionToken VARCHAR(255))';
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
