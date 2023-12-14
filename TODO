@@ -19,11 +19,16 @@ Notes:
 - look into logging & security, cross cutting concerns
 - build in more error catching/safety
 - Change path from using .env to __dirname CommonJS
+- make sure to have comprehensive logout functionality
+    - logout btn
+    - cookie expiry
+    - onabort
 
 
 Setup frontend/login page
 - Build Registration
 - Advanced features: captcha, admin page, pwd reset...
+- redirect to lobby if logged in?
 
 Setup lobby page
 - if no session token, redirect
