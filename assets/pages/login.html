@@ -91,22 +91,24 @@
                 .then((data) => { //after getting server response
                     
                     validUser = data.validUser
+
                     if(validUser){
-                        alert('Valid User')
                         token = data.token
-                        // document.cookie = `token=${token}`
+                        //add session token to local data
                         window.location.replace(`lobby`);
-                    }
-                    else {
-                        alert('Invalid User')
-                    }
+                    }else {
+                    //reload page with alert 
+                    alert('Invalid')
+                    } 
+                    
+                    return;
                 })
                 .catch(function (err) {
                     alert("Unable to fetch -" + err);
                     return;
                 });
-
                 return false;
+
         }
         </script>
     </head>
