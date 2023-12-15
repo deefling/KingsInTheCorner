@@ -23,6 +23,7 @@ Setup frontend/login page
 
 Setup lobby page
 - if no session token, redirect
+- need to differentiate lobby & session
 - all players in lobby can see list of other players in lobby
     - how to track actual presence?
     - tokens
@@ -31,7 +32,7 @@ Setup lobby page
     - websockets
 - a player can choose a competitor to challenge
     - button next to each player on list
-    - can't challenge self
+    - can't challenge selfx
 - once the competitor accepts, both players are redirected to the game page
     - some kind of popup message
     - Notify challenger if that user exits lobby?

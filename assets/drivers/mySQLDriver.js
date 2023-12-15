@@ -155,7 +155,7 @@ function setToken(userID, token){
     con.query(sql, [token, userID], (err, result) => {
       if (err) throw err;
 
-      dbLog(result)
+      // dbLog(result)
     });
 
 
@@ -180,7 +180,7 @@ function joinLobby(token){
     con.query(sql, [token, userID], (err, result) => {
       if (err) throw err;
 
-      dbLog(result)
+      // dbLog(result)
     });
 
 

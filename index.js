@@ -9,6 +9,7 @@ const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const lobby = [];
+const activeSessions = []
 
 
 server.use(cors())
@@ -20,7 +21,7 @@ server.use(express.json());
 server.get('/login', (req, res) => {
   const {token} = req.cookies
 
-  lobby.forEach((user, index) => {
+  activeSessions.forEach((user, index) => {
     if(token == user.token){
       res.redirect('/lobby')
       return
@@ -34,10 +35,17 @@ server.get('/login', (req, res) => {
 
 server.get('/logout', (req, res) => {
   const {token} = req.cookies
-  
+
   lobby.forEach((user, index) => {
     if(token == user.token){
       lobby.splice(index, 1)
+      return;
+    }
+  })
+  
+  activeSessions.forEach((user, index) => {
+    if(token == user.token){
+      activeSessions.splice(index, 1)
     }
   })
 
@@ -50,7 +58,7 @@ server.post('/checkPassword', async (req, res) => {
     if(id !== -1){
       var token = await generateToken(id, req.ip);
 
-      lobby.push({username: req.body.username, token: token})
+      activeSessions.push({username: req.body.username, token: token})
       sql.setToken(id, token)
       
       res.cookie('token', token);      
@@ -72,11 +80,52 @@ server.get('/lobby', (req, res) => {
     return
   }
 
+  activeSessions.forEach((user) => {
+    if(token == user.token){
+      var notAlreadyInLobby = true
+      lobby.forEach((user) => {
+        if(token == user.token){
+          notAlreadyInLobby = false;
+          return;
+        }
+      });
+      
+      if(notAlreadyInLobby){
+        lobby.push(user)
+      }
+      return;
+    }
+  })
+
   result = verifyToken(token, req.ip)
 
-
-    res.sendFile(path.join(pages_dir, '/lobby.html'));
+  res.sendFile(path.join(pages_dir, '/lobby.html'));
   })
+
+
+
+
+  server.get('/leaveLobby', (req, res) => {
+    const {token} = req.cookies
+    
+    if(!token){
+      return
+    }
+  
+    lobby.forEach((user, index) => {
+      if(token == user.token){
+        lobby.splice(index, 1)
+        return;
+      }
+    })
+    
+    res.json({leftLobby: true});
+    })
+  
+  
+
+
+
 
 server.get('/playerList', (req, res) => {
   const {token} = req.cookies
@@ -203,8 +252,6 @@ async function decodeToken(token){
   await bcrypt.compare(interleavedToken, checksum, (err, result)=>{
     if(err){return}
 
-    apiLog('bycrypt matched: ' + result)
-
     //de-interleave all values
     var ip = ""
     var id = ""
@@ -235,7 +282,7 @@ return data
 async function verifyToken(token, ip){
   var data = await decodeToken(token)
   //use promises to wait for data
-  apiLog(data)
+  // apiLog(data)
 
   // var found = false
   // lobby.forEach((user) => {
