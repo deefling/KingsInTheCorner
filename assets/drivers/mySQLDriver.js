@@ -52,7 +52,7 @@ function recreateDB(){
     });
 
     //CREATE TABLE FOR LOBBY
-    sql = "CREATE TABLE lobby (userID INT, FOREIGN KEY (userID) REFERENCES USERS(userID))"
+    sql = "CREATE TABLE lobby (userID INT, FOREIGN KEY (userID) REFERENCES users(userID))"
     con.query(sql, function (err, result) {
       if (err) throw err;
       dbLog("Table created");
@@ -147,6 +147,21 @@ await myPromise.then(
 }
 
 function setToken(userID, token){
+  pool.getConnection(function(err, con) {
+    if (err) throw err;
+  
+    var sql = 'UPDATE users SET sessionToken = ? WHERE userID = ?'
+
+    con.query(sql, [token, userID], (err, result) => {
+      if (err) throw err;
+
+      dbLog(result)
+    });
+
+
+    con.release();
+  });
+
 
 }
 
@@ -155,6 +170,23 @@ function getToken(userID){
 }
 
 function joinLobby(token){
+  pool.getConnection(function(err, con) {
+    if (err) throw err;
+
+
+  
+    var sql = 'UPDATE lobby SET sessionToken = ? WHERE userID = ?'
+
+    con.query(sql, [token, userID], (err, result) => {
+      if (err) throw err;
+
+      dbLog(result)
+    });
+
+
+    con.release();
+  });
+
   
 }
 
@@ -170,4 +202,4 @@ function dbLog(msg){
 
 
 
-module.exports = { checkPassword, dbLog, checkDB, recreateDB}
+module.exports = { checkPassword, dbLog, checkDB, recreateDB, setToken}

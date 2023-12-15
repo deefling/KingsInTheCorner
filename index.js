@@ -9,7 +9,7 @@ const cards_dir = process.env.CARDS_DIRECTORY
 const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
-const activeTokens = [];
+const lobby = [];
 
 
 server.use(cors())
@@ -26,9 +26,11 @@ server.post('/checkPassword', async (req, res) => {
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){
       var token = await generateToken(req.ip, id);
+
+      lobby.push({username: req.body.username, token: token})
+      sql.setToken(id, token)
       
       res.cookie('token', token);      
-      //put token in db by passing id?
       res.json({validUser: true});
 
     } else {
@@ -142,13 +144,12 @@ async function generateToken(ip = "127.0.0.1", id){
   );
   
   apiLog("Generated token:" + tokenstr)
-  activeTokens.push(tokenstr)
   return tokenstr
 
 }
 
+function decodeToken(){}
+
 function verifyToken(){
 
 }
-
-function getDataFromToken(){}
