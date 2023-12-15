@@ -21,6 +21,22 @@ server.get('/login', (req, res) => {
   res.sendFile(path.join(pages_dir, '/login.html'));
 })
 
+server.get('/logout', (req, res) => {
+  const {token} = req.cookies
+  apiLog(lobby)
+  
+  lobby.forEach((user, index) => {
+    if(token == user.token){
+      lobby.splice(index, 1)
+    }
+  })
+
+  apiLog(lobby)
+
+  res.clearCookie('token')
+  res.json({loggedOut: true})
+})
+
 server.post('/checkPassword', async (req, res) => {
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){

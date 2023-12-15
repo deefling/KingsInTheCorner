@@ -48,6 +48,17 @@
                 flex-direction: column;
             }
 
+            #logoutbtn{
+                width: 5vw;
+                height: 5vh;
+                border-radius: 5px;
+                background-color: #B9566D;
+                color: #F1EDEE;
+                position: absolute;
+                top: 4vh;
+                right: 2vw;
+            }
+
             #chat_log{
                 width: 100%;
                 height: 85vh;
@@ -67,6 +78,24 @@
             window.onload = () => {
                 // setInterval(updatePlayerList, 3000);
                 updatePlayerList()
+            }
+
+            function logout(){
+                fetch("/logout", {
+                    method: "GET", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    }
+                ).then((response) => {
+                    return response.json();
+                })
+                .then((data) => { //after getting server response, redirect
+                    window.location.replace(`login`);
+                });
+
             }
 
 
@@ -120,7 +149,9 @@
             <h1>Player List</h1>
         </div>
         <div id="lobby_chat">
-            <div id="chat_log"></div>
+            <div id="chat_log">
+                <button id="logoutbtn" onclick="logout()">Logout</button>
+            </div>
             <input id="chat_box" type="text">
         </div>
     </body>
