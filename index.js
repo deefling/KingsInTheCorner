@@ -182,7 +182,7 @@ server.get('/playerList', (req, res) => {
         return;
       }
     })
-    // apiLog(clonedLobby)
+    apiLog(clonedLobby)
 
     res.json(clonedLobby);
   })
