@@ -45,7 +45,9 @@
 
             p{
                 margin-right: 20px;
+                margin-left: 10px;
                 font-size: 1.2em;
+                margin-bottom: 0.2em;
             }
 
             h1{
@@ -68,6 +70,11 @@
                 background-color: #F1EDEE;
                 color: #34344A;
                 
+            }
+
+            .challengebtn:disabled{
+                background-color: #F1EDEE;
+                color: #B9566D;
             }
 
             #lobby_chat{
@@ -100,40 +107,182 @@
             #chat_log{
                 width: 100%;
                 height: 85vh;
+                display: flex;
+                flex-direction: column;
+                overflow: scroll;
+            }
+
+            em{
+                font-weight: 750;
+                font-style: normal;
+            }
+
+            em.blue{
+                color: #34344A;
+            }
+
+            em.red{
+                color: #B9566D
+            }
+
+            #input_row{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
             }
             
             #chat_box{
-                width: 100%;
+                width: 79%;
                 height: 10vh;
                 background-color: #F1EDEE;
+                border: 1px black solid;
             }
 
+            #sendbtn{
+                width: 20%;
+                height: 10vh;
+                background-color: #B9566D;
+                color: #F1EDEE;
+                border: none;
+                border-radius: 5px;
+
+
+            }
+
+
+            #sendbtn:hover{
+                background-color: #34344A;
+                color: #B9566D;
+            }
         </style>
 
         <script defer>
+            var selfUsername = "";
 
 
             window.onload = () => {
                 updatePlayerList()
                 setInterval(updatePlayerList, 1500);
+                initMessaging()
             }
 
-            document.onvisibilitychange(()=>{
-                if (document.visibilityState === 'hidden') {
-                    function logout(){
-                        fetch("/leaveLobby", {
-                            method: "GET", // *GET, POST, PUT, DELETE, etc.
-                            mode: "cors", // no-cors, *cors, same-origin
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            }
-                        );
+            //???
+            // document.onvisibilitychange(()=>{
+            //     if (document.visibilityState === 'hidden') {
+            //         function logout(){
+            //             fetch("/leaveLobby", {
+            //                 method: "GET", // *GET, POST, PUT, DELETE, etc.
+            //                 mode: "cors", // no-cors, *cors, same-origin
+            //                 headers: {
+            //                     'Accept': 'application/json',
+            //                     'Content-Type': 'application/json'
+            //                 },
+            //                 }
+            //             );
+            //         }
+            //     }
+
+            // })
+
+
+            //websocket messaging
+            function initMessaging(){
+
+                const chatbox = document.querySelector("#chat_box")
+                const chatlog = document.querySelector("#chat_log")
+                const sendbtn = document.querySelector("#sendbtn")
+
+                let ws;
+
+                function showMessage(message) {
+                    if(message == ""){return;}
+                    parsedMessage = JSON.parse(message)
+
+                    const name = document.createElement('em')
+                    if(parsedMessage.hasOwnProperty('self') && parsedMessage.self == true){
+                        name.className = 'red'
+                    } else {
+                        name.className = 'blue'
+                    }
+
+                    const msg = document.createElement('p')
+
+                    name.innerText = "[" + parsedMessage.user + ']: '
+
+                    msg.appendChild(name);
+                    msg.append(parsedMessage.msg)
+
+                    chatlog.appendChild(msg)
+
+
+                    // chatlog.scrollTop = messages.scrollHeight;
+                    chatbox.value = '';
+                }
+
+
+
+                function init() {
+                    if (ws) {
+                        ws.onerror = ws.onopen = ws.onclose = null;
+                        ws.close();
+                    }
+
+                    ws = new WebSocket('ws://localhost:3000');
+                    ws.onopen = () => {
+                        console.log('Connection opened!');
+                    }
+                    ws.onmessage = ({ data }) => showMessage(data);
+                    ws.onclose = function() {
+                        ws = null;
                     }
                 }
 
-            })
+
+
+                sendbtn.addEventListener('click', ()=>{
+                    sendMsg()
+                })
+
+                chatbox.addEventListener("keypress", function(event) {
+                    // If the user presses the "Enter" key on the keyboard
+                    if (event.key === "Enter") {
+                        // Cancel the default action, if needed
+                        event.preventDefault();
+                        // Trigger the button element with a click
+                        document.getElementById("sendbtn").click();
+                    }
+                });
+                
+                function sendMsg() {
+                    if (ws == undefined || !ws) {
+                        showMessage(JSON.stringify({user: "System", msg: "No WebSocket connection :("}));
+                        return ;
+                    }
+
+                    if(chatbox.value == ""){return;}
+
+                    var token =""
+                    var cookie = document.cookie
+                    cookieChunks = cookie.split(';')
+                    cookieChunks.forEach((chunk)=>{
+                        if(chunk.substring(0, 5) == 'token'){
+                            token = chunk.substring(6, chunk.length)
+                        }
+                    })
+
+                    var data = JSON.stringify({token: token, msg: chatbox.value })
+                    var localdata = JSON.stringify({user: selfUsername, msg: chatbox.value, self: true })
+
+                    ws.send(data);
+                    showMessage(localdata);
+                }
+
+                init();
+            }
+            
+
+
+
 
             function logout(){
                 fetch("/logout", {
@@ -152,6 +301,9 @@
                 });
 
             }
+
+
+
 
 
             
@@ -191,6 +343,15 @@
                         playerBtn.innerText = "Challenge"
                         playerBtn.className = 'challengebtn'
 
+                        if(row.hasOwnProperty('self') && row.self == true){
+                            playerBtn.disabled = true
+                            selfUsername = row.username
+                        }
+
+                        playerBtn.onclick = ()=>{
+                            //challenge player
+                        }
+
 
                         playerRow.appendChild(playerName);
                         playerRow.appendChild(playerBtn);
@@ -213,7 +374,10 @@
             <div id="chat_log">
                 <button id="logoutbtn" onclick="logout()">Logout</button>
             </div>
-            <input id="chat_box" type="text">
+            <div id=""input_row>
+                <input id="chat_box" type="text">
+                <button id="sendbtn">Send</button>
+            </div>
         </div>
     </body>
 </html>

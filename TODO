@@ -11,7 +11,7 @@ Notes:
     - cookie expiry
     - onabort
     - lobby vs session
-
+- can't double login
 
 Setup frontend/login page
 - try to sql inject

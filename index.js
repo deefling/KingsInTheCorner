@@ -1,15 +1,22 @@
 const express = require('express')
 var cors = require('cors')
-const server = express()
-const port = 3000
 const path = require('path');
-const pages_dir = path.join(__dirname, "/assets/pages/")
-const cards_dir = path.join(__dirname, "/assets/cards/")
 const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
+const http = require('http');
+const WebSocket = require('ws');
+
 const lobby = [];
 const activeSessions = []
+const port = 3000
+const pages_dir = path.join(__dirname, "/assets/pages/")
+const cards_dir = path.join(__dirname, "/assets/cards/")
+
+const server = express();
+
+
+
 
 
 server.use(cors())
@@ -65,7 +72,7 @@ server.post('/signUp', async (req, res) => {
   if(id !== -1){
     var token = await generateToken(id, req.ip);
 
-    activeSessions.push({username: req.body.username, token: token})
+    activeSessions.push({username: req.body.username, token: token, ip: req.ip})
     sql.setToken(id, token)
     
     res.cookie('token', token);      
@@ -82,7 +89,7 @@ server.post('/checkPassword', async (req, res) => {
     if(id !== -1){
       var token = await generateToken(id, req.ip);
 
-      activeSessions.push({username: req.body.username, token: token})
+      activeSessions.push({username: req.body.username, token: token, ip: req.ip})
       sql.setToken(id, token)
       
       res.cookie('token', token);      
@@ -103,7 +110,7 @@ server.get('/lobby', (req, res) => {
     res.redirect('/login');
     return
   }
-
+ 
   activeSessions.forEach((user) => {
     if(token == user.token){
       var notAlreadyInLobby = true
@@ -116,8 +123,8 @@ server.get('/lobby', (req, res) => {
       
       if(notAlreadyInLobby){
         lobby.push(user)
+        return;
       }
-      return;
     }
   })
 
@@ -154,20 +161,24 @@ server.get('/lobby', (req, res) => {
 server.get('/playerList', (req, res) => {
   const {token} = req.cookies
 
-    var data = [
-      {username: 'player1'},
-      {username: 'player2'},
-      {username: 'player3'},
-      {username: 'player4'},
-      {username: 'player5'},
-      {username: 'player6'},
-      {username: 'player7'},
-      {username: 'player8'},
-      {username: 'player9'},
-      {username: 'player10'},
-    ];
+    var clonedLobby = [...lobby]
 
-    res.json(lobby);
+    clonedLobby.forEach((row)=>{
+      if(row.token == token){
+        row.self = true;
+        return;
+      }
+    })
+    // apiLog(clonedLobby)
+
+    res.json(clonedLobby);
+  })
+
+
+
+  server.post('/challengePlayer', (req, res) => {
+
+      res.json({});
   })
 
 
@@ -184,9 +195,33 @@ server.get('/playerList', (req, res) => {
 
 
 
-server.listen(port, () => {
+const httpServer = server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
+
+const wss = new WebSocket.Server({ server: httpServer })
+wss.on('connection', function connection(ws) {
+  ws.on('message', function incoming(data) {
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        var parsedData = JSON.parse(data)
+        var returnData = ""
+
+        lobby.forEach((user)=>{
+          if(user.token == parsedData.token){
+            returnData = JSON.stringify({user: user.username, msg: parsedData.msg})
+          }
+        });
+
+
+
+
+        client.send(returnData);
+      }
+    })
+  })
+})
+
 
 
 
