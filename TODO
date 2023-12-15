@@ -1,13 +1,5 @@
 Need to set up RLES server
-- Open up firewalls?
-- Set up GitHub SSH key on RLES & connect to repo
-
-
-Set up MySQL locally
-- Replicate db when complete & port over
-- Try to SQL inject when setting up login
-Set up MySQL on RLES
-
+- Open up firewalls
 
 Figure out how websockets work 
 https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers 
@@ -15,7 +7,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocke
 
 
 Notes:
-- must validate & sanitize all data
 - look into logging & security, cross cutting concerns
 - build in more error catching/safety
 - Change path from using .env to __dirname CommonJS
@@ -27,8 +18,12 @@ Notes:
 
 Setup frontend/login page
 - Build Registration
-- Advanced features: captcha, admin page, pwd reset...
 - redirect to lobby if logged in?
+- try to sql inject
+- validate & saniztize data
+- Advanced features: captcha, admin page, pwd reset...
+
+
 
 Setup lobby page
 - if no session token, redirect
@@ -48,3 +43,4 @@ Setup game page
 - if no session token, redirect
 - outline
 - need to think about how i am storing all game states
+- quit to lobby button?

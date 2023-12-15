@@ -3,9 +3,8 @@ var cors = require('cors')
 const server = express()
 const port = 3000
 const path = require('path');
-const dotenv = require('dotenv').config()
-const pages_dir = process.env.PAGES_DIRECTORY
-const cards_dir = process.env.CARDS_DIRECTORY
+const pages_dir = path.join(__dirname, "/assets/pages/")
+const cards_dir = path.join(__dirname, "/assets/cards/")
 const sql = require('./assets/drivers/mySQLDriver');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
@@ -76,7 +75,16 @@ server.get('/playerList', (req, res) => {
 
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
+  apiLog(__dirname)
 })
+
+
+
+
+
+
+
+
 
 function apiLog(msg){
   console.log('\x1b[95m[Server]:\x1b[0m', msg)
