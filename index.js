@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const http = require('http');
 const WebSocket = require('ws');
+const IP = require('ip')
 
 const lobby = [];
 const activeSessions = []
@@ -41,6 +42,12 @@ server.get('/login', (req, res) => {
   })
 
   res.sendFile(path.join(pages_dir, '/login.html'));
+})
+
+server.get('/ip', (req, res) => {
+  const ipAddress = IP.address();
+  const ipJSON = JSON.stringify({ip: ipAddress})
+  res.json(ipJSON)
 })
 
 
@@ -203,6 +210,8 @@ server.get('/playerList', (req, res) => {
 
 const httpServer = server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
+  const ipAddress = IP.address();
+  apiLog(ipAddress)
 })
 
 const wss = new WebSocket.Server({ server: httpServer })

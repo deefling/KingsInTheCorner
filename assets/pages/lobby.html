@@ -209,14 +209,37 @@
                         ws.close();
                     }
 
-                    ws = new WebSocket('ws://localhost:3000');
-                    ws.onopen = () => {
-                        console.log('Connection opened!');
+
+                    //fetch ip
+                    fetch("/ip", {
+                    method: "GET", // *GET, POST, PUT, DELETE, etc.
+                    mode: "cors", // no-cors, *cors, same-origin
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
                     }
-                    ws.onmessage = ({ data }) => showMessage(data);
-                    ws.onclose = function() {
-                        ws = null;
-                    }
+                    ).then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => { //after getting server response, redirect
+                        dataParsed = JSON.parse(data)
+                        const wsPath = 'ws://' + dataParsed.ip + ':3000'
+                        console.log(wsPath)
+
+                        ws = new WebSocket(wsPath);
+                        ws.onopen = () => {
+                            console.log('Connection opened!');
+                        }
+                        ws.onmessage = ({ data }) => showMessage(data);
+                        ws.onclose = function() {
+                            ws = null;
+                        }
+                    });
+
+
+
+                  
                 }
 
 

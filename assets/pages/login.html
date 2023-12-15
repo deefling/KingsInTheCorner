@@ -77,6 +77,7 @@
                 let user = document.getElementById("username").value;
                 let pw = document.getElementById("password").value;
 
+
                 const userData = {username: user, password: pw}
                 var path = ""
 
@@ -129,7 +130,7 @@
         <div id = 'loginTile'>  
             <h1>Log In</h1>
 
-            <form id="loginForm" onsubmit="return login()">
+            <form id="loginForm" >
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username" value=""><br>
                 

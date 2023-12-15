@@ -17,8 +17,7 @@ Setup frontend/login page
 
 Setup lobby page
 - a player can choose a competitor to challenge
-    - button next to each player on list
-    - can't challenge self
+    - challenge with websocket?
 - once the competitor accepts, both players are redirected to the game page
     - some kind of popup message
     - Notify challenger if that user exits lobby?
