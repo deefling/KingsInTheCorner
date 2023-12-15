@@ -49,6 +49,8 @@ function recreateDB(){
       
       //INSERT SAMPLE USER
       addUser('deefling', 'password')
+      addUser('student', 'student')
+      addUser('ritchie', 'munson')
     });
 
     //CREATE TABLE FOR LOBBY
@@ -87,22 +89,35 @@ function checkDB(){
 
 
 
-function addUser(user, pw) {
-  pool.getConnection(function(err, con) {
-    if (err) throw err;
-    dbLog("Connected!");
+async function addUser(user, pw) {
+  var id = -1;
+  
+  var myPromise = new Promise((myResolve, myReject) => {
+    pool.getConnection(async function(err, con) {
+      if (err) throw err;
+      dbLog("Connected!");
 
-    const password = sha256(pw)
+      const password = sha256(pw)
     
+      var sql = "INSERT INTO users (username, password) VALUES (?,?)";
+      con.query(sql, [user, password], (err, result) => {
+        if (err){ myReject(); throw err; }
+        con.release();
 
-    var sql = "INSERT INTO users (username, password) VALUES (?,?)";
-        con.query(sql, [user, password], (err, result) => {
-          if (err) throw err;
-          dbLog("Record inserted!");
+        dbLog("Record inserted!");
+        myResolve(result.insertId)
+      })
     });
-
-    con.release()
   });
+
+  await myPromise.then(
+    function(value) {id = value},
+    function(error) {}
+  );
+
+  dbLog(id)
+
+  return id
 }
 
 
@@ -169,30 +184,6 @@ function getToken(userID){
 
 }
 
-function joinLobby(token){
-  pool.getConnection(function(err, con) {
-    if (err) throw err;
-
-
-  
-    var sql = 'UPDATE lobby SET sessionToken = ? WHERE userID = ?'
-
-    con.query(sql, [token, userID], (err, result) => {
-      if (err) throw err;
-
-      // dbLog(result)
-    });
-
-
-    con.release();
-  });
-
-  
-}
-
-function leaveLobby (token){
-  
-}
 
 function dbLog(msg){
   console.log('\x1b[34m[MySQL]:\x1b[0m', msg)
@@ -202,4 +193,4 @@ function dbLog(msg){
 
 
 
-module.exports = { checkPassword, dbLog, checkDB, recreateDB, setToken}
+module.exports = { checkPassword, dbLog, checkDB, recreateDB, setToken, addUser}

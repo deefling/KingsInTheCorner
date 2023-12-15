@@ -63,16 +63,23 @@
 
 
         <script>    
-            async function login(){
+
+            async function login(loginType){
                 let user = document.getElementById("username").value;
                 let pw = document.getElementById("password").value;
 
                 const userData = {username: user, password: pw}
+                var path = ""
+
+                if(loginType == 0){
+                    path = "/checkPassword"
+                } else if (loginType == 1){
+                    path = "/signUp"
+                }
 
                 var validUser = false;
-                var token = ""
 
-                await fetch("/checkPassword", {
+                await fetch(path, {
                     method: "POST", // *GET, POST, PUT, DELETE, etc.
                     mode: "cors", // no-cors, *cors, same-origin
                     headers: {
@@ -122,8 +129,8 @@
                  
                 <!-- forgot password? -->
                 <span>
-                    <input class="btn" id="submitbtn" type="button" onclick="login()" value="Log In">
-                    <input class="btn" id="registerbtn" type="button" value="Sign Up">
+                    <input class="btn" id="submitbtn" type="button" onclick="login(0)" value="Log In">
+                    <input class="btn" id="registerbtn" type="button" onclick="login(1)" value="Sign Up">
     
                 </span>
 

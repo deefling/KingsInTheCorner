@@ -53,6 +53,25 @@ server.get('/logout', (req, res) => {
   res.json({loggedOut: true})
 })
 
+
+server.post('/signUp', async (req, res) => {
+  var id = await sql.addUser(req.body.username, req.body.password)
+
+  if(id !== -1){
+    var token = await generateToken(id, req.ip);
+
+    activeSessions.push({username: req.body.username, token: token})
+    sql.setToken(id, token)
+    
+    res.cookie('token', token);      
+    res.json({validUser: true});
+
+  } else {
+    res.json({validUser: false});
+  }
+})
+
+
 server.post('/checkPassword', async (req, res) => {
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){

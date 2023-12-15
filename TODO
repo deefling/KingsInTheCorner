@@ -22,8 +22,6 @@ Setup frontend/login page
 
 
 Setup lobby page
-- if no session token, redirect
-- need to differentiate lobby & session
 - all players in lobby can see list of other players in lobby
     - how to track actual presence?
     - tokens
