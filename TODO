@@ -10,27 +10,22 @@ Notes:
     - logout btn
     - cookie expiry
     - onabort
+    - lobby vs session
 
 
 Setup frontend/login page
-- Build Registration
 - try to sql inject
 - validate & saniztize data
 - Advanced features: captcha, admin page, pwd reset...
 - more responsive
 
 
-
 Setup lobby page
-- all players in lobby can see list of other players in lobby
-    - how to track actual presence?
-    - tokens
-    - logout button
 - all players in lobby can chat with eachother
     - websockets
 - a player can choose a competitor to challenge
     - button next to each player on list
-    - can't challenge selfx
+    - can't challenge self
 - once the competitor accepts, both players are redirected to the game page
     - some kind of popup message
     - Notify challenger if that user exits lobby?

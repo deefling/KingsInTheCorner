@@ -15,6 +15,11 @@ const activeSessions = []
 server.use(cors())
 server.use(cookieParser());
 server.use(express.json());
+server.use(function(req, res, next){
+  // apiLog(req.method + " " + req.url + " invoked")
+  //validatetoken if not login page?
+  next();
+})
 
 
 
@@ -102,8 +107,8 @@ server.get('/lobby', (req, res) => {
   activeSessions.forEach((user) => {
     if(token == user.token){
       var notAlreadyInLobby = true
-      lobby.forEach((user) => {
-        if(token == user.token){
+      lobby.forEach((row) => {
+        if(token == row.token){
           notAlreadyInLobby = false;
           return;
         }
