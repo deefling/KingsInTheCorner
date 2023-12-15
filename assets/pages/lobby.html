@@ -275,7 +275,8 @@
                         }
                     })
 
-                    var data = JSON.stringify({token: token, msg: chatbox.value })
+                    // var data = JSON.stringify({token: token, msg: chatbox.value })
+                    var data = JSON.stringify({msg: chatbox.value })
                     var localdata = JSON.stringify({user: selfUsername, msg: chatbox.value, self: true })
 
                     ws.send(data);
