@@ -14,7 +14,6 @@ Notes:
 
 Setup frontend/login page
 - Build Registration
-- redirect to lobby if logged in?
 - try to sql inject
 - validate & saniztize data
 - Advanced features: captcha, admin page, pwd reset...
@@ -32,6 +31,7 @@ Setup lobby page
     - websockets
 - a player can choose a competitor to challenge
     - button next to each player on list
+    - can't challenge self
 - once the competitor accepts, both players are redirected to the game page
     - some kind of popup message
     - Notify challenger if that user exits lobby?

@@ -28,15 +28,46 @@
                 border-radius: 5px;
                 display: flex;
                 flex-direction: column;
+                overflow: scroll;
+                align-items: flex-end;
+
             }
 
-            #player_row{
+            .player_row{
                 display: flex;
                 flex-direction: row;
+                align-items: center;
+                margin: 10px;
+                margin-top: 10px;
+                margin-right: 2vw;
+                
+            }
+
+            p{
+                margin-right: 20px;
+                font-size: 1.2em;
             }
 
             h1{
                 margin: 0.5em;
+                align-self: flex-start;
+                color: #34344A;
+                font-weight: bold;
+            }
+
+            .challengebtn{
+                background-color: #34344A;
+                color: #F1EDEE;
+                border: none;
+                border-radius: 4px;
+                padding: 0.7em;
+                font-size: 1em;
+            }
+
+            .challengebtn:hover{
+                background-color: #F1EDEE;
+                color: #34344A;
+                
             }
 
             #lobby_chat{
@@ -49,14 +80,21 @@
             }
 
             #logoutbtn{
-                width: 5vw;
-                height: 5vh;
+                width: 7vw;
+                height: 7vh;
                 border-radius: 5px;
+                border: none;
                 background-color: #B9566D;
                 color: #F1EDEE;
                 position: absolute;
                 top: 4vh;
                 right: 2vw;
+                font-size: 1.5em;
+            }
+
+            #logoutbtn:hover{
+                background-color: #34344A;
+                
             }
 
             #chat_log{
@@ -76,8 +114,8 @@
 
 
             window.onload = () => {
-                // setInterval(updatePlayerList, 3000);
                 updatePlayerList()
+                setInterval(updatePlayerList, 1500);
             }
 
             function logout(){
@@ -119,9 +157,13 @@
                 .then((data) => { //after getting server response
                     console.log(data)
 
+                    while(playerList.childElementCount > 1){
+                        playerList.removeChild(playerList.lastChild)
+                    }
+
                     data.forEach(row => {
                         const playerRow = document.createElement('div');
-                        playerRow.id = "player_row";
+                        playerRow.className = "player_row";
 
                         const playerName = document.createElement('p');
                         playerName.id = "player_name";
@@ -130,6 +172,8 @@
 
                         const playerBtn = document.createElement('button')
                         playerBtn.innerText = "Challenge"
+                        playerBtn.className = 'challengebtn'
+
 
                         playerRow.appendChild(playerName);
                         playerRow.appendChild(playerBtn);

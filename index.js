@@ -18,20 +18,28 @@ server.use(express.json());
 
 
 server.get('/login', (req, res) => {
+  const {token} = req.cookies
+
+  lobby.forEach((user, index) => {
+    if(token == user.token){
+      res.redirect('/lobby')
+      return
+    }
+  })
+
   res.sendFile(path.join(pages_dir, '/login.html'));
 })
 
+
+
 server.get('/logout', (req, res) => {
   const {token} = req.cookies
-  apiLog(lobby)
   
   lobby.forEach((user, index) => {
     if(token == user.token){
       lobby.splice(index, 1)
     }
   })
-
-  apiLog(lobby)
 
   res.clearCookie('token')
   res.json({loggedOut: true})
@@ -40,7 +48,7 @@ server.get('/logout', (req, res) => {
 server.post('/checkPassword', async (req, res) => {
     const id = await sql.checkPassword(req.body.username, req.body.password)
     if(id !== -1){
-      var token = await generateToken(req.ip, id);
+      var token = await generateToken(id, req.ip);
 
       lobby.push({username: req.body.username, token: token})
       sql.setToken(id, token)
@@ -57,12 +65,21 @@ server.post('/checkPassword', async (req, res) => {
 
 
 server.get('/lobby', (req, res) => {
+  const {token} = req.cookies
+  
+  if(!token){
+    res.redirect('/login');
+    return
+  }
+
+  result = verifyToken(token, req.ip)
+
+
     res.sendFile(path.join(pages_dir, '/lobby.html'));
   })
 
 server.get('/playerList', (req, res) => {
   const {token} = req.cookies
-  apiLog(token);
 
     var data = [
       {username: 'player1'},
@@ -70,9 +87,14 @@ server.get('/playerList', (req, res) => {
       {username: 'player3'},
       {username: 'player4'},
       {username: 'player5'},
+      {username: 'player6'},
+      {username: 'player7'},
+      {username: 'player8'},
+      {username: 'player9'},
+      {username: 'player10'},
     ];
 
-    res.json(data);
+    res.json(lobby);
   })
 
 
@@ -91,7 +113,6 @@ server.get('/playerList', (req, res) => {
 
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
-  apiLog(__dirname)
 })
 
 
@@ -106,21 +127,21 @@ function apiLog(msg){
   console.log('\x1b[95m[Server]:\x1b[0m', msg)
 }
 
-async function generateToken(ip = "127.0.0.1", id){
+async function generateToken(id, ip = "127.0.0.1"){
 
   var tokenstr = ""
 
   //timestamp to base 13
   var timestamp = Date.now()
-  var cryptTime = timestamp.toString(16)
+  var cryptTime = timestamp.toString(12)
 
   //id chunks to base 10
   var cryptID = id.toString(8)
 
-  var ipChunks = ip.split('.')
+
   var cleanIP = ip.replace(/\./g, '')
   var cleanIP = cleanIP.replace(/\:/g, '')
-  cryptIP = cleanIP.toString(32)
+  cryptIP = parseInt(cleanIP, 16).toString()
 
   //get length of longest str
   var longestStr = cryptTime.length
@@ -161,7 +182,6 @@ async function generateToken(ip = "127.0.0.1", id){
     });
   });
 
-
   await myPromise.then(
     function(value) {tokenstr = value},
     function(error) {}
@@ -169,11 +189,58 @@ async function generateToken(ip = "127.0.0.1", id){
   
   apiLog("Generated token:" + tokenstr)
   return tokenstr
-
 }
 
-function decodeToken(){}
 
-function verifyToken(){
 
+async function decodeToken(token){
+  var data = {validToken: false}
+
+  var checksum = token.substring(0, 60)
+  var interleavedToken = token.substring(60, token.length)
+
+  //analyze checksum to make sure string has not been tampered with
+  await bcrypt.compare(interleavedToken, checksum, (err, result)=>{
+    if(err){return}
+
+    apiLog('bycrypt matched: ' + result)
+
+    //de-interleave all values
+    var ip = ""
+    var id = ""
+
+    for(let i = 3; i < interleavedToken.length; i += 4){
+      ip += interleavedToken[i]
+    }
+
+    for(let i = interleavedToken.length -2; i > 0; i -= 4){
+      id += interleavedToken[i]
+    }
+
+    ip = ip.toString(16)
+    while(ip.charAt[0] == '0'){
+      ip = ip.substring(1, ip.length)
+    }
+
+    id = parseInt(id, 8)
+
+    data.ip = ip;
+    data.id = id;
+    return
+  })
+
+return data
+}
+
+async function verifyToken(token, ip){
+  var data = await decodeToken(token)
+  //use promises to wait for data
+  apiLog(data)
+
+  // var found = false
+  // lobby.forEach((user) => {
+  //   if(token == user.token){
+  //     return
+  //   }
+  // })
 }
