@@ -174,12 +174,18 @@ server.get('/lobby', (req, res) => {
 server.get('/playerList', (req, res) => {
   const {token} = req.cookies
 
-    var clonedLobby = [...lobby]
+    var clonedLobby = []
 
-    clonedLobby.forEach((row)=>{
+    lobby.forEach((row)=>{
       if(row.token == token){
-        row.self = true;
-        return;
+        let newRow = {}
+        newRow.username = row.username;
+        newRow.token = row.token;
+        newRow.ip = row.ip;
+        newRow.self = true;
+        clonedLobby.push(newRow)
+      } else {
+        clonedLobby.push(row)
       }
     })
     apiLog(clonedLobby)
