@@ -221,17 +221,15 @@ const httpServer = server.listen(port, () => {
 })
 
 const wss = new WebSocket.Server({ server: httpServer })
-wss.on('connection', function connection(ws, req) {
-  
+wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(data) {
-    const {token} = req.cookies
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         var parsedData = JSON.parse(data)
         var returnData = ""
 
         lobby.forEach((user)=>{
-          if(user.token == token){
+          if(user.token == parsedData.token){
             returnData = JSON.stringify({user: user.username, msg: parsedData.msg})
           }
         });
