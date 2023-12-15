@@ -1,8 +1,3 @@
-Figure out how websockets work 
-https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers 
-https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
-
-
 Notes:
 - look into logging & security, cross cutting concerns
 - build in more error catching/safety
@@ -21,8 +16,6 @@ Setup frontend/login page
 
 
 Setup lobby page
-- all players in lobby can chat with eachother
-    - websockets
 - a player can choose a competitor to challenge
     - button next to each player on list
     - can't challenge self

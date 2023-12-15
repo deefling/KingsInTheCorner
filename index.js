@@ -111,8 +111,10 @@ server.get('/lobby', (req, res) => {
     return
   }
  
+  var notActiveUser = true;
   activeSessions.forEach((user) => {
     if(token == user.token){
+      notActiveUser = false;
       var notAlreadyInLobby = true
       lobby.forEach((row) => {
         if(token == row.token){
@@ -127,6 +129,10 @@ server.get('/lobby', (req, res) => {
       }
     }
   })
+  if(notActiveUser){
+    res.redirect('/login');
+    return
+  }
 
   result = verifyToken(token, req.ip)
 
@@ -212,9 +218,6 @@ wss.on('connection', function connection(ws) {
             returnData = JSON.stringify({user: user.username, msg: parsedData.msg})
           }
         });
-
-
-
 
         client.send(returnData);
       }
