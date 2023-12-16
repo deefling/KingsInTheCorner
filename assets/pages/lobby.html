@@ -231,15 +231,20 @@
                         ws.onopen = () => {
                             console.log('Connection opened!');
                         }
-                        ws.onmessage = ({ data }) => showMessage(data);
+                        ws.onmessage = ({ data }) => {
+                            var parsedData = JSON.parse(data)
+                            if(parsedData.hasOwnProperty('challenge') && parsedData.challenge == true){
+                                alert('you have been challenged to a game by ' + parsedData.user)
+                                return;
+                            }
+                            
+                            
+                            showMessage(data);
+                        }
                         ws.onclose = function() {
                             ws = null;
                         }
                     });
-
-
-
-                  
                 }
 
 
@@ -283,6 +288,29 @@
 
                     ws.send(data);
                     showMessage(localdata);
+                }
+
+                function sendChallenge(ip){
+                    if (ws == undefined || !ws) {
+                        showMessage(JSON.stringify({user: "System", msg: "No WebSocket connection :("}));
+                        return ;
+                    }
+
+                    var token =""
+                    var cookie = decodeURIComponent(document.cookie);
+                    cookieChunks = cookie.split(';')
+                    cookieChunks.forEach((chunk)=>{
+                        if(chunk.substring(0, 5) == 'token'){
+                            token = chunk.substring(6, chunk.length)
+                            console.log(token)
+                        }
+                    })
+
+                    var data = JSON.stringify({challenge: true, challengerUser: selfUsername, challengerToken: token, challengeeIP: ip })
+
+                    ws.send(data);
+
+
                 }
 
                 init();
@@ -350,6 +378,7 @@
                         const playerBtn = document.createElement('button')
                         playerBtn.innerText = "Challenge"
                         playerBtn.className = 'challengebtn'
+                       
 
                         if(row.hasOwnProperty('self') && row.self == true){
                             playerBtn.disabled = true
@@ -358,6 +387,8 @@
 
                         playerBtn.onclick = ()=>{
                             //challenge player
+                            sendChallenge(row.ip)
+
                         }
 
 

@@ -177,16 +177,15 @@ server.get('/playerList', (req, res) => {
     var clonedLobby = []
 
     lobby.forEach((row)=>{
+      let newRow = {}
+      newRow.username = row.username;
+      newRow.ip = row.ip;
+
       if(row.token == token){
-        let newRow = {}
-        newRow.username = row.username;
-        newRow.token = row.token;
-        newRow.ip = row.ip;
         newRow.self = true;
-        clonedLobby.push(newRow)
-      } else {
-        clonedLobby.push(row)
-      }
+      } 
+      clonedLobby.push(newRow)
+
     })
     apiLog(clonedLobby)
 
@@ -221,11 +220,28 @@ const httpServer = server.listen(port, () => {
 })
 
 const wss = new WebSocket.Server({ server: httpServer })
-wss.on('connection', function connection(ws) {
+wss.on('connection', function connection(ws, req) {
+  const myIP = req.ip
   ws.on('message', function incoming(data) {
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         var parsedData = JSON.parse(data)
+
+        if(parsedData.hasOwnProperty('challenge') && parsedData.challenge == true){
+          if(myIP == parsedData.challengeeeIP){
+            apiLog('challengee found!')
+            var challengeData = JSON.stringify({challenge: true, user: parsedData.challengerUser})
+
+            //start game in db
+            //redirect challenger? player
+
+
+            client.send(challengeData);
+            return;
+          } 
+        }
+
+
         var returnData = ""
 
         lobby.forEach((user)=>{
