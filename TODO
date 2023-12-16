@@ -1,3 +1,7 @@
+Login finishing touches
+- enter to login
+- invalid message with more info
+
 Setup lobby page
 - a player can choose a competitor to challenge
     - challenge with websocket?
