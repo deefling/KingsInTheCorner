@@ -96,7 +96,7 @@
                 position: absolute;
                 top: 4vh;
                 right: 2vw;
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
 
             #logoutbtn:hover{
@@ -266,6 +266,8 @@
 
                     if(chatbox.value == ""){return;}
 
+                    var msg = chatbox.value;
+
                     var token =""
                     var cookie = decodeURIComponent(document.cookie);
                     cookieChunks = cookie.split(';')
@@ -276,8 +278,8 @@
                         }
                     })
 
-                    var data = JSON.stringify({token: token, msg: chatbox.value })
-                    var localdata = JSON.stringify({user: selfUsername, msg: chatbox.value, self: true })
+                    var data = JSON.stringify({token: token, msg: msg })
+                    var localdata = JSON.stringify({user: selfUsername, msg: msg, self: true })
 
                     ws.send(data);
                     showMessage(localdata);

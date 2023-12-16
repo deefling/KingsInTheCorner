@@ -357,7 +357,6 @@ return data
 }
 
 async function verifyToken(token, ip){
-  var data = await decodeToken(token)
   //use promises to wait for data
   // apiLog(data)
 

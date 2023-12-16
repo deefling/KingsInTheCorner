@@ -1,20 +1,3 @@
-Notes:
-- look into logging & security, cross cutting concerns
-- build in more error catching/safety
-- make sure to have comprehensive logout functionality
-    - logout btn
-    - cookie expiry
-    - onabort
-    - lobby vs session
-- can't double login
-
-Setup frontend/login page
-- try to sql inject
-- validate & saniztize data
-- Advanced features: captcha, admin page, pwd reset...
-- more responsive
-
-
 Setup lobby page
 - a player can choose a competitor to challenge
     - challenge with websocket?
@@ -27,3 +10,15 @@ Setup game page
 - outline
 - need to think about how i am storing all game states
 - quit to lobby button?
+
+Final Checks:
+- Logging
+- Responsive Sizing
+- Logged in status / redirects
+- Major runtime errors all caught
+
+- Advanced features: 
+- captcha
+- admin page
+- pwd reset
+- multiplayer
